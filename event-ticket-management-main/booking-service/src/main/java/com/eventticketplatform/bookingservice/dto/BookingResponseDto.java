@@ -19,5 +19,8 @@ public class BookingResponseDto {
     private BigDecimal totalAmount;
     private LocalDateTime bookingDate;
     private LocalDateTime expiresAt;
+    private LocalDateTime confirmedAt;
+    private LocalDateTime refundedAt;
     private BookingStatus status;
 }
+

@@ -43,4 +43,7 @@ public class Payment {
     private String razorpayPaymentId;
 
     private String razorpaySignature;
+
+    /** Timestamp set when the payment is marked as REFUNDED. */
+    private LocalDateTime refundDate;
 }

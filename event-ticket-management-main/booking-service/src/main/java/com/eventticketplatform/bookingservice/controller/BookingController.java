@@ -2,6 +2,7 @@ package com.eventticketplatform.bookingservice.controller;
 
 import com.eventticketplatform.bookingservice.dto.BookingRequestDto;
 import com.eventticketplatform.bookingservice.dto.BookingResponseDto;
+import com.eventticketplatform.bookingservice.dto.RefundSummaryDto;
 import com.eventticketplatform.bookingservice.service.BookingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -61,5 +62,17 @@ public class BookingController {
     @DeleteMapping("/{id}/cancel")
     public ResponseEntity<BookingResponseDto> cancelBookingDelete(@PathVariable Long id) {
         return ResponseEntity.ok(bookingService.cancelBooking(id));
+    }
+
+    /** Process a refund — validates 6-hour window and 24-hour pre-event cutoff. */
+    @PutMapping("/{id}/refund")
+    public ResponseEntity<BookingResponseDto> requestRefund(@PathVariable Long id) {
+        return ResponseEntity.ok(bookingService.requestRefund(id));
+    }
+
+    /** Admin: all refund requests with user name and email for the refund payout table. */
+    @GetMapping("/refunds")
+    public ResponseEntity<List<RefundSummaryDto>> getRefundedBookings() {
+        return ResponseEntity.ok(bookingService.getRefundedBookings());
     }
 }

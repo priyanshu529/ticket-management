@@ -14,6 +14,7 @@ import EventDetails from './pages/EventDetails';
 import Dashboard from './pages/Dashboard';
 import EventForm from './pages/EventForm';
 import BookingList from './pages/BookingList';
+import RefundDashboard from './pages/RefundDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
@@ -87,6 +88,7 @@ export default function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/event/new" element={<EventForm />} />
               <Route path="/dashboard/event/edit/:id" element={<EventForm />} />
+              <Route path="/dashboard/refunds" element={<RefundDashboard />} />
               
               {/* Authentication */}
               <Route path="/login" element={<Login />} />

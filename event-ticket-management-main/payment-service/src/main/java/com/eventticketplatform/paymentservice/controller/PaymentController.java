@@ -36,4 +36,14 @@ public class PaymentController {
                 paymentService.getPaymentByBooking(bookingId)
         );
     }
-}
+
+    /**
+     * Called by booking-service (via Feign) to mark a payment as REFUNDED
+     * after the booking-service has validated the refund rules and cancelled the booking.
+     * This is a simulated refund — no Razorpay API is called.
+     */
+    @PutMapping("/booking/{bookingId}/refund")
+    public ResponseEntity<PaymentResponseDto> refundPayment(@PathVariable Long bookingId) {
+        return ResponseEntity.ok(paymentService.refundPayment(bookingId));
+    }
+}

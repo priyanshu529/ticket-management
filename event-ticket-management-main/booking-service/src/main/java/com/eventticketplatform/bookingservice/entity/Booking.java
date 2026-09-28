@@ -38,4 +38,19 @@ public class Booking {
 
     @Column
     private LocalDateTime expiresAt;
+
+    /**
+     * Set when the booking transitions to CONFIRMED (i.e. payment is verified).
+     * Used to enforce the 6-hour refund eligibility window.
+     */
+    @Column
+    private LocalDateTime confirmedAt;
+
+    /**
+     * Set when a refund is successfully processed via requestRefund().
+     * Null for bookings that were never refunded.
+     * Used as the authoritative marker to populate the admin refund table.
+     */
+    @Column
+    private LocalDateTime refundedAt;
 }

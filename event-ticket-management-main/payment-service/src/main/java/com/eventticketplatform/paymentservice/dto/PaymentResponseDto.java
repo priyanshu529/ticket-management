@@ -18,4 +18,5 @@ public class PaymentResponseDto {
     private String transactionId;
     private String razorpayOrderId;
     private String razorpayPaymentId;
+    private LocalDateTime refundDate;
 }

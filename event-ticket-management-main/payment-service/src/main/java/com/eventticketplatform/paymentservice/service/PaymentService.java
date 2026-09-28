@@ -151,6 +151,44 @@ public class PaymentService {
         return toResponseDto(payment);
     }
 
+    /**
+     * Marks a payment as REFUNDED for the given booking.
+     *
+     * This is a dummy/simulated refund — no actual Razorpay Refund API call is made.
+     * The user will be informed in the frontend that the refund will be credited
+     * to their original payment method within 3-5 working days.
+     *
+     * If no payment record exists (e.g. booking was never paid), the method
+     * returns gracefully without throwing so the booking cancellation flow is
+     * not blocked.
+     */
+    public PaymentResponseDto refundPayment(Long bookingId) {
+        Payment payment = paymentRepository.findByBookingId(bookingId)
+                .orElse(null);
+
+        if (payment == null) {
+            // No payment record found — nothing to refund, return empty response
+            return new PaymentResponseDto();
+        }
+
+        if (payment.getStatus() == PaymentStatus.REFUNDED) {
+            // Already refunded — idempotent, just return current state
+            return toResponseDto(payment);
+        }
+
+        if (payment.getStatus() != PaymentStatus.COMPLETED) {
+            // Only COMPLETED payments can be refunded
+            throw new IllegalStateException(
+                    "Cannot refund a payment in status: " + payment.getStatus() +
+                    ". Only COMPLETED payments are eligible for refund.");
+        }
+
+        payment.setStatus(PaymentStatus.REFUNDED);
+        payment.setRefundDate(LocalDateTime.now());
+        Payment saved = paymentRepository.save(payment);
+        return toResponseDto(saved);
+    }
+
     private PaymentResponseDto toResponseDto(Payment p) {
         PaymentResponseDto dto = new PaymentResponseDto();
         dto.setId(p.getId());
@@ -163,6 +201,7 @@ public class PaymentService {
         dto.setTransactionId(p.getTransactionId());
         dto.setRazorpayOrderId(p.getRazorpayOrderId());
         dto.setRazorpayPaymentId(p.getRazorpayPaymentId());
+        dto.setRefundDate(p.getRefundDate());
         return dto;
     }
-}
+}

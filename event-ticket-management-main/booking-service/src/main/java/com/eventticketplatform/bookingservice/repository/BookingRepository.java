@@ -13,4 +13,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByEventIdIn(List<Long> eventIds);
 
     List<Booking> findByStatusAndExpiresAtBefore(BookingStatus status, LocalDateTime dateTime);
+
+    /** Returns all bookings that were cancelled via a refund request, newest first. */
+    List<Booking> findByRefundedAtIsNotNullOrderByRefundedAtDesc();
 }

@@ -36,3 +36,8 @@ export const getAllBookings = () => api.get('/bookings');
 // Payments
 export const createRazorpayOrder = (data) => api.post('/payments/create-order', data);
 export const verifyRazorpayPayment = (data) => api.post('/payments/verify', data);
+export const getPaymentByBooking = (bookingId) => api.get(`/payments/booking/${bookingId}`);
+
+// Refund
+export const requestRefund = (bookingId) => api.put(`/bookings/${bookingId}/refund`);
+export const getRefundedBookings = () => api.get('/bookings/refunds');
